@@ -26,12 +26,12 @@ import (
 	"net"
 	"net/http"
 	"net/http/httptrace"
-	"os"
 	"reflect"
 	"sync"
 	"testing"
 	"time"
 
+	"go.uber.org/goleak"
 	"k8s.io/apimachinery/pkg/util/wait"
 	genericapifilters "k8s.io/apiserver/pkg/endpoints/filters"
 	"k8s.io/apiserver/pkg/server/dynamiccertificates"
@@ -44,7 +44,7 @@ import (
 
 func TestMain(m *testing.M) {
 	klog.InitFlags(nil)
-	os.Exit(m.Run())
+	goleak.VerifyTestMain(m)
 }
 
 // doer sends a request to the server

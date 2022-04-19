@@ -24,6 +24,7 @@ require (
 	github.com/stretchr/objx v0.2.0 // indirect
 	github.com/stretchr/testify v1.7.0
 	github.com/vmware/govmomi v0.20.3
+	go.uber.org/goleak v1.1.10
 	golang.org/x/crypto v0.0.0-20220214200702-86341886e292
 	golang.org/x/oauth2 v0.0.0-20211104180415-d3ed0bb246c8
 	google.golang.org/api v0.46.0

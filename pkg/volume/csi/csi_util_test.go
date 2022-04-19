@@ -28,6 +28,7 @@ import (
 	"testing"
 	"time"
 
+	"go.uber.org/goleak"
 	api "k8s.io/api/core/v1"
 	storagev1 "k8s.io/api/storage/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
@@ -41,7 +42,7 @@ import (
 // go test -v ./ --args <klog flags>
 func TestMain(m *testing.M) {
 	klog.InitFlags(flag.CommandLine)
-	os.Exit(m.Run())
+	goleak.VerifyTestMain(m)
 }
 
 func makeTestPVWithMountOptions(name string, sizeGig int, driverName, volID string, mountOptions []string) *api.PersistentVolume {

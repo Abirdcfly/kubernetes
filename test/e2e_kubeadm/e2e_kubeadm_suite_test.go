@@ -27,6 +27,7 @@ import (
 	"github.com/onsi/ginkgo/config"
 	"github.com/onsi/gomega"
 	"github.com/spf13/pflag"
+	"go.uber.org/goleak"
 
 	morereporters "github.com/onsi/ginkgo/reporters"
 	"k8s.io/kubernetes/test/e2e/framework"
@@ -41,7 +42,7 @@ func TestMain(m *testing.M) {
 	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
 	pflag.Parse()
 	framework.AfterReadingAllFlags(&framework.TestContext)
-	os.Exit(m.Run())
+	goleak.VerifyTestMain(m)
 }
 
 func TestE2E(t *testing.T) {

@@ -21,9 +21,11 @@ import (
 	"os"
 	"testing"
 	"time"
+
+	"go.uber.org/goleak"
 )
 
 func TestMain(m *testing.M) {
 	rand.Seed(time.Now().UnixNano())
-	os.Exit(m.Run())
+	goleak.VerifyTestMain(m)
 }

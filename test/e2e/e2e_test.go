@@ -24,6 +24,7 @@ import (
 	"testing"
 	"time"
 
+	"go.uber.org/goleak"
 	"gopkg.in/yaml.v2"
 
 	// Never, ever remove the line with "/ginkgo". Without it,
@@ -129,7 +130,7 @@ func TestMain(m *testing.M) {
 	}
 
 	rand.Seed(time.Now().UnixNano())
-	os.Exit(m.Run())
+	goleak.VerifyTestMain(m)
 }
 
 func TestE2E(t *testing.T) {

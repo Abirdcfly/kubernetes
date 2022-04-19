@@ -21,7 +21,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
-	"os"
 	"reflect"
 	"strings"
 	"sync/atomic"
@@ -29,6 +28,7 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
+	"go.uber.org/goleak"
 	"k8s.io/cli-runtime/pkg/genericclioptions"
 
 	appsv1 "k8s.io/api/apps/v1"
@@ -67,7 +67,7 @@ func TestMain(m *testing.M) {
 	// A copy of the same node, but cordoned.
 	cordonedNode = node.DeepCopy()
 	cordonedNode.Spec.Unschedulable = true
-	os.Exit(m.Run())
+	goleak.VerifyTestMain(m)
 }
 
 func TestCordon(t *testing.T) {

@@ -21,6 +21,8 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
+
+	"go.uber.org/goleak"
 )
 
 func TestMain(m *testing.M) {
@@ -30,5 +32,5 @@ func TestMain(m *testing.M) {
 	}
 	defer os.RemoveAll(tmp)
 	os.Setenv("KUBECONFIG", filepath.Join(tmp, "dummy-nonexistent-kubeconfig"))
-	os.Exit(m.Run())
+	goleak.VerifyTestMain(m)
 }

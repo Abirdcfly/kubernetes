@@ -28,6 +28,7 @@ import (
 	"reflect"
 	"testing"
 
+	"go.uber.org/goleak"
 	certutil "k8s.io/client-go/util/cert"
 	netutils "k8s.io/utils/net"
 
@@ -74,8 +75,7 @@ func TestMain(m *testing.M) {
 	if err != nil {
 		panic("Could not generate ECDSA key")
 	}
-
-	os.Exit(m.Run())
+	goleak.VerifyTestMain(m)
 }
 
 func TestNewCertAndKey(t *testing.T) {

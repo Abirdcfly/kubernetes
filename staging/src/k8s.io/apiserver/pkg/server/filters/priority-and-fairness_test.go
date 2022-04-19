@@ -22,13 +22,13 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"net/url"
-	"os"
 	"reflect"
 	"strings"
 	"sync"
 	"testing"
 	"time"
 
+	"go.uber.org/goleak"
 	flowcontrol "k8s.io/api/flowcontrol/v1beta2"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -57,7 +57,7 @@ import (
 
 func TestMain(m *testing.M) {
 	klog.InitFlags(nil)
-	os.Exit(m.Run())
+	goleak.VerifyTestMain(m)
 }
 
 type mockDecision int
@@ -85,7 +85,8 @@ type fakeApfFilter struct {
 func (t fakeApfFilter) MaintainObservations(stopCh <-chan struct{}) {
 }
 
-func (t fakeApfFilter) Handle(ctx context.Context,
+func (t fakeApfFilter) Handle(
+	ctx context.Context,
 	requestDigest utilflowcontrol.RequestDigest,
 	noteFn func(fs *flowcontrol.FlowSchema, pl *flowcontrol.PriorityLevelConfiguration, flowDistinguisher string),
 	workEstimator func() fcrequest.WorkEstimate,
@@ -389,7 +390,8 @@ func newFakeWatchApfFilter(capacity int) *fakeWatchApfFilter {
 	}
 }
 
-func (f *fakeWatchApfFilter) Handle(ctx context.Context,
+func (f *fakeWatchApfFilter) Handle(
+	ctx context.Context,
 	requestDigest utilflowcontrol.RequestDigest,
 	_ func(fs *flowcontrol.FlowSchema, pl *flowcontrol.PriorityLevelConfiguration, flowDistinguisher string),
 	_ func() fcrequest.WorkEstimate,
@@ -640,7 +642,8 @@ type fakeFilterRequestDigest struct {
 	workEstimateGot  fcrequest.WorkEstimate
 }
 
-func (f *fakeFilterRequestDigest) Handle(ctx context.Context,
+func (f *fakeFilterRequestDigest) Handle(
+	ctx context.Context,
 	requestDigest utilflowcontrol.RequestDigest,
 	noteFn func(fs *flowcontrol.FlowSchema, pl *flowcontrol.PriorityLevelConfiguration, flowDistinguisher string),
 	workEstimator func() fcrequest.WorkEstimate,
@@ -1086,8 +1089,10 @@ func TestPriorityAndFairnessWithPanicRecoveryAndTimeoutFilter(t *testing.T) {
 	})
 }
 
-func startAPFController(t *testing.T, stopCh <-chan struct{}, apfConfiguration []runtime.Object, serverConcurrency int,
-	requestWaitLimit time.Duration, plName string, plConcurrency int) (utilflowcontrol.Interface, <-chan error) {
+func startAPFController(
+	t *testing.T, stopCh <-chan struct{}, apfConfiguration []runtime.Object, serverConcurrency int,
+	requestWaitLimit time.Duration, plName string, plConcurrency int,
+) (utilflowcontrol.Interface, <-chan error) {
 	clientset := newClientset(t, apfConfiguration...)
 	// this test does not rely on resync, so resync period is set to zero
 	factory := informers.NewSharedInformerFactory(clientset, 0)

@@ -20,12 +20,12 @@ import (
 	"context"
 	"fmt"
 	"math/rand"
-	"os"
 	"reflect"
 	"sync"
 	"testing"
 	"time"
 
+	"go.uber.org/goleak"
 	flowcontrol "k8s.io/api/flowcontrol/v1beta2"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/sets"
@@ -49,7 +49,7 @@ var testDebugLogs = false
 
 func TestMain(m *testing.M) {
 	klog.InitFlags(nil)
-	os.Exit(m.Run())
+	goleak.VerifyTestMain(m)
 }
 
 var mandPLs = func() map[string]*flowcontrol.PriorityLevelConfiguration {

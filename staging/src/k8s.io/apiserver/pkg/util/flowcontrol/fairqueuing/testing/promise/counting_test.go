@@ -18,11 +18,11 @@ package promise
 
 import (
 	"context"
-	"os"
 	"sync"
 	"testing"
 	"time"
 
+	"go.uber.org/goleak"
 	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/apiserver/pkg/util/flowcontrol/counter"
 	"k8s.io/apiserver/pkg/util/flowcontrol/fairqueuing/promise"
@@ -32,7 +32,7 @@ import (
 
 func TestMain(m *testing.M) {
 	klog.InitFlags(nil)
-	os.Exit(m.Run())
+	goleak.VerifyTestMain(m)
 }
 
 func TestCountingWriteOnceSet(t *testing.T) {

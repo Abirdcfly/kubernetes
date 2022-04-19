@@ -20,7 +20,6 @@ import (
 	"crypto"
 	"crypto/x509"
 	"fmt"
-	"os"
 	"path/filepath"
 	"regexp"
 	"runtime"
@@ -29,6 +28,7 @@ import (
 	"sync"
 	"testing"
 
+	"go.uber.org/goleak"
 	"k8s.io/kubernetes/cmd/kubeadm/app/util/pkiutil"
 )
 
@@ -36,7 +36,7 @@ import (
 // while executing tests in m.
 func RunWithPrivateKeyFixtureDirectory(m *testing.M) {
 	defer install()()
-	os.Exit(m.Run())
+	goleak.VerifyTestMain(m)
 }
 
 // Reset() indicates a new test is starting and previously returned private key fixtures may be reused.

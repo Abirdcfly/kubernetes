@@ -27,7 +27,6 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-
 	"math/rand"
 	"os"
 	"os/exec"
@@ -119,7 +118,7 @@ func TestMain(m *testing.M) {
 	pflag.Parse()
 	framework.AfterReadingAllFlags(&framework.TestContext)
 	setExtraEnvs()
-	os.Exit(m.Run())
+	goleak.VerifyTestMain(m)
 }
 
 // When running the containerized conformance test, we'll mount the

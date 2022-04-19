@@ -21,7 +21,6 @@ import (
 	"errors"
 	"fmt"
 	"math"
-	"os"
 	"reflect"
 	"sort"
 	"strings"
@@ -30,6 +29,7 @@ import (
 	"testing"
 	"time"
 
+	"go.uber.org/goleak"
 	"k8s.io/utils/clock"
 
 	"k8s.io/apiserver/pkg/util/flowcontrol/counter"
@@ -424,7 +424,7 @@ func (uss *uniformScenarioState) finalReview() {
 
 func TestMain(m *testing.M) {
 	klog.InitFlags(nil)
-	os.Exit(m.Run())
+	goleak.VerifyTestMain(m)
 }
 
 // TestNoRestraint tests whether the no-restraint factory gives every client what it asks for
