@@ -359,6 +359,8 @@ func verifyGroupKind(controllerRef *metav1.OwnerReference, expectedKind string, 
 func (dc *DisruptionController) Run(ctx context.Context) {
 	defer utilruntime.HandleCrash()
 	defer dc.queue.ShutDown()
+	//defer dc.recheckQueue.ShutDown()
+	//defer dc.broadcaster.Shutdown()
 
 	klog.Infof("Starting disruption controller")
 	defer klog.Infof("Shutting down disruption controller")
@@ -803,8 +805,10 @@ func (dc *DisruptionController) failSafe(ctx context.Context, pdb *policy.PodDis
 	return dc.getUpdater()(ctx, newPdb)
 }
 
-func (dc *DisruptionController) updatePdbStatus(ctx context.Context, pdb *policy.PodDisruptionBudget, currentHealthy, desiredHealthy, expectedCount int32,
-	disruptedPods map[string]metav1.Time) error {
+func (dc *DisruptionController) updatePdbStatus(
+	ctx context.Context, pdb *policy.PodDisruptionBudget, currentHealthy, desiredHealthy, expectedCount int32,
+	disruptedPods map[string]metav1.Time,
+) error {
 
 	// We require expectedCount to be > 0 so that PDBs which currently match no
 	// pods are in a safe state when their first pods appear but this controller

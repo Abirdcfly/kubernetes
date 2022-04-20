@@ -52,6 +52,7 @@ import (
 	"k8s.io/klog/v2"
 	_ "k8s.io/kubernetes/pkg/apis/core/install"
 	"k8s.io/kubernetes/pkg/controller"
+	"k8s.io/kubernetes/vendor/k8s.io/klog/v2"
 	utilpointer "k8s.io/utils/pointer"
 )
 
@@ -990,6 +991,7 @@ func TestUpdateDisruptedPods(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	dc, ps := newFakeDisruptionController(ctx)
+	dc.recheckQueue.ShutDown()
 	dc.recheckQueue = workqueue.NewNamedDelayingQueue("pdb_queue")
 	pdb, pdbName := newMinAvailablePodDisruptionBudget(t, intstr.FromInt(1))
 	currentTime := time.Now()

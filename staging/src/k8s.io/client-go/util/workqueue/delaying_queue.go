@@ -18,6 +18,7 @@ package workqueue
 
 import (
 	"container/heap"
+	"fmt"
 	"sync"
 	"time"
 
@@ -199,9 +200,10 @@ func (q *delayingType) waitingLoop() {
 	heap.Init(waitingForQueue)
 
 	waitingEntryByData := map[t]*waitFor{}
-
+	fmt.Println("waitingLoop: stopCh!")
 	for {
 		if q.Interface.ShuttingDown() {
+			fmt.Println("waitingLoop: ShuttingDown")
 			return
 		}
 
@@ -232,6 +234,7 @@ func (q *delayingType) waitingLoop() {
 
 		select {
 		case <-q.stopCh:
+			fmt.Println("waitingLoop: stopCh")
 			return
 
 		case <-q.heartbeat.C():
