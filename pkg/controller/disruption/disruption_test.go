@@ -20,7 +20,6 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"os"
 	"runtime/debug"
 	"strings"
 	"sync"
@@ -187,6 +186,7 @@ func newFakeDisruptionController(ctx context.Context) (*disruptionController, *p
 		<-ctx.Done()
 		dc.queue.ShutDown()
 		dc.recheckQueue.ShutDown()
+		dc.broadcaster.Shutdown()
 	}()
 	return &disruptionController{
 		dc,
@@ -420,7 +420,6 @@ func add(t *testing.T, store cache.Store, obj interface{}) {
 
 // Create one with no selector.  Verify it matches all pods
 func TestNoSelector(t *testing.T) {
-	defer goleak.VerifyNone(t)
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	dc, ps := newFakeDisruptionController(ctx)
@@ -1397,6 +1396,6 @@ func waitForCacheCount(store cache.Store, n int) error {
 // TestMain adds klog flags to make debugging tests easier.
 func TestMain(m *testing.M) {
 	klog.InitFlags(flag.CommandLine)
-	os.Exit(m.Run())
-	//goleak.VerifyTestMain(m)
+	//os.Exit(m.Run())
+	goleak.VerifyTestMain(m)
 }
