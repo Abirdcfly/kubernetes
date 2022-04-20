@@ -436,6 +436,7 @@ func TestNoSelector(t *testing.T) {
 	add(t, dc.podStore, pod)
 	dc.sync(ctx, pdbName)
 	ps.VerifyPdbStatus(t, pdbName, 0, 1, 3, 1, map[string]metav1.Time{})
+	cancel()
 }
 
 // Verify that available/expected counts go up as we add pods, then verify that
