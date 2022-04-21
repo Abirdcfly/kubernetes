@@ -101,7 +101,8 @@ func setup(t *testing.T) (*kubeapiservertesting.TestServer, *disruption.Disrupti
 func TestPDBWithScaleSubresource(t *testing.T) {
 	s, pdbc, informers, clientSet, apiExtensionClient, dynamicClient := setup(t)
 	defer s.TearDownFn()
-	ctx := context.TODO()
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
 	nsName := "pdb-scale-subresource"
 	createNs(ctx, t, nsName, clientSet)
 
