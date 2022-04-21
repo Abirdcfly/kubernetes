@@ -56,6 +56,7 @@ require (
 )
 
 replace (
+	go.uber.org/goleak => go.uber.org/goleak v1.1.10
 	k8s.io/api => ../api
 	k8s.io/apimachinery => ../apimachinery
 	k8s.io/apiserver => ../apiserver

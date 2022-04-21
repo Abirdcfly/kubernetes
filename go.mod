@@ -85,6 +85,7 @@ require (
 	go.opentelemetry.io/otel/sdk v0.20.0
 	go.opentelemetry.io/otel/trace v0.20.0
 	go.opentelemetry.io/proto/otlp v0.7.0
+	go.uber.org/goleak v1.1.12
 	go.uber.org/zap v1.19.0
 	golang.org/x/crypto v0.0.0-20220214200702-86341886e292
 	golang.org/x/exp v0.0.0-20210220032938-85be41e4509f // indirect

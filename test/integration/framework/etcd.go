@@ -28,6 +28,7 @@ import (
 	"strings"
 	"time"
 
+	"go.uber.org/goleak"
 	"google.golang.org/grpc/grpclog"
 	"k8s.io/klog/v2"
 
@@ -196,6 +197,12 @@ func EtcdMain(tests func() int) {
 	}
 	after := runtime.NumGoroutine()
 	klog.Infof("unexpected number of goroutines: before: %d after %d", before, after)
+	if result == 0 {
+		if err := goleak.Find(); err != nil {
+			klog.Infof("goleak: Errors on successful test run: %v\n", err)
+			result = 1
+		}
+	}
 	os.Exit(result)
 }
 

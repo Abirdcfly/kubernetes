@@ -23,6 +23,7 @@ require (
 	go.opentelemetry.io/otel/exporters/otlp v0.20.0
 	go.opentelemetry.io/otel/sdk v0.20.0
 	go.opentelemetry.io/otel/trace v0.20.0
+	go.uber.org/goleak v1.1.12 // indirect
 	go.uber.org/zap v1.19.0
 	golang.org/x/lint v0.0.0-20210508222113-6edffad5e616 // indirect
 	golang.org/x/sys v0.0.0-20220209214540-3681064d5158
@@ -36,6 +37,7 @@ require (
 )
 
 replace (
+	go.uber.org/goleak => go.uber.org/goleak v1.1.10
 	k8s.io/api => ../api
 	k8s.io/apimachinery => ../apimachinery
 	k8s.io/client-go => ../client-go
